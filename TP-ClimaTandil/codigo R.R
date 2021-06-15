@@ -12,7 +12,7 @@ datos_clima_tandil_2018 <- read_csv("DataFrames/datos-clima-tandil - 2018.csv", 
 datos_clima_tandil_2019 <- read_csv("DataFrames/datos-clima-tandil - 2019.csv", na = "NA")
 datos_clima_tandil_2020 <- read_csv("DataFrames/datos-clima-tandil - 2020.csv", na = "NA")
 
-#creo la lista que contiene los dataFrames de los climas
+#creo la lista que contiene los dataFrames del clima de tandil
 list_df <- list()
 list_df[["2010"]] <- datos_clima_tandil_2010
 list_df[["2011"]] <- datos_clima_tandil_2011
@@ -26,12 +26,40 @@ list_df[["2018"]] <- datos_clima_tandil_2018
 list_df[["2019"]] <- datos_clima_tandil_2019
 list_df[["2020"]] <- datos_clima_tandil_2020
 
+#print(class(list_df[[toString(2010)]]))
+#print(class(datos_clima_tandil_2010))
+
 
 #libreria para manejo de string
 #library(stringr)
 
-#muestro los datos recorriendo la lista
+#muestro los primeros y ultimos datos de cada df recorriendo la lista
+
+#for(indice in 2010:2020){
+#  print(paste(" Primeros elementos del Anio: ", toString(indice)))
+#  print(head(list_df[[toString(indice)]],10))
+#  print(paste(" Ultimos elementos del Anio: ", toString(indice)))
+#  print(tail(list_df[[toString(indice)]],10))
+#}
+
+
+#realizamos una limpieza de cada df
 for(indice in 2010:2020){
-  print(str_c("Anio: ", toString(indice)))
-  print(list_df[[toString(indice)]])
+  print(paste(" Limpieza del dataframe del Anio: ", toString(indice)))
+  df_aux <- as.data.frame(list_df[[toString(indice)]]) #tomo el dataframe del año i
+  
+  for(j in 1:ncol(df_aux)){ #por cada elemento del dataframe 
+    for(i in 1:nrow(df_aux)){
+      df_aux[i,j]<-as.numeric(gsub("[^0-9.-]","",df_aux[i,j])) #tomo el elemento y lo combierto 
+    }
+    df_aux[,j]<-as.numeric(unlist(df_aux[,j]))
+  }
+  list_df[[toString(indice)]] <- df_aux #y lo vuelvo a guardar en la lista
 }
+
+datos_clima <- as.data.frame(datos_clima_tandil_2010)
+#unimos todos los dataframe en uno solo
+for(indice in 2010:2020){
+  datos_clima <- rbind(datos_clima, list_df[[toString(indice)]])
+}
+print(datos_clima)
