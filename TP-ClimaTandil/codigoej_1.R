@@ -29,23 +29,9 @@ list_df[["2020"]] <- datos_clima_tandil_2020
 #print(class(list_df[[toString(2010)]]))
 #print(class(datos_clima_tandil_2010))
 
-
-#libreria para manejo de string
-#library(stringr)
-
-#muestro los primeros y ultimos datos de cada df recorriendo la lista
-
-#for(indice in 2010:2020){
-#  print(paste(" Primeros elementos del Anio: ", toString(indice)))
-#  print(head(list_df[[toString(indice)]],10))
-#  print(paste(" Ultimos elementos del Anio: ", toString(indice)))
-#  print(tail(list_df[[toString(indice)]],10))
-#}
-
-
 #realizamos una limpieza de cada df
 for(indice in 2010:2020){
-  print(paste(" Limpieza del dataframe del Anio: ", toString(indice)))
+  print(paste(" Limpieza del dataframe del año: ", toString(indice)))
   df_aux <- as.data.frame(list_df[[toString(indice)]]) #tomo el dataframe del año i
   
   for(j in 1:ncol(df_aux)){ #por cada elemento del dataframe 
@@ -55,11 +41,15 @@ for(indice in 2010:2020){
     df_aux[,j]<-as.numeric(unlist(df_aux[,j]))
   }
   list_df[[toString(indice)]] <- df_aux #y lo vuelvo a guardar en la lista
+  print(paste(" Guardado el dataframe del año: ", toString(indice)))
+  
 }
 
-datos_clima <- as.data.frame(datos_clima_tandil_2010)
+datos_clima <- as.data.frame(list_df[["2010"]])
 #unimos todos los dataframe en uno solo
-for(indice in 2010:2020){
+for(indice in 2011:2020){
   datos_clima <- rbind(datos_clima, list_df[[toString(indice)]])
 }
+print("----datos clima completos-----")
 print(datos_clima)
+
