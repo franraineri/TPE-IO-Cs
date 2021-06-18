@@ -75,7 +75,7 @@ plot(
   type= "o",
   col="Blue",
   ylim = c(tempMin,tempMax),
-  main="Temperaturas minimas, maximas y medias: \n Temperatura maxima: Red | Temperatura media: Azul | Temperatura minima: Negro",
+  main="Temperaturas minimas, maximas y medias del anio 2019: \n Temperatura maxima: Red | Temperatura media: Azul | Temperatura minima: Negro",
   col.main="Blue",
   font.main=1,
   xlab = "Meses",
@@ -100,7 +100,55 @@ lines(
 
 ## Codigo para el grafico de barras donde se muestra la precipitación mensual acumulada
 ## durante el año 2010 ##
-#datos_clima_2010 <- as.data.frame(list_df[["2010"]])
+datos_clima_2010 <- as.data.frame(list_df[["2010"]])
+datos_clima_2010
+datos_clima_2019
+precipitacion_mensual <- datos_clima_2010[,8]
+precipitacion_mensual
+barplot(
+  precipitacion_mensual,
+  xlab = "Meses",
+  ylab = "Precipitacion",
+  main = "Precipitacion mensual del anio 2010",
+  names.arg = c(1:12)
+)
+
+## EJERCICIO 2.3
+
+## cargo el DataFrame necesario
+datos_clima_2017 <- as.data.frame(list_df[["2017"]])
+
+#limpieza de datos sobre los NA
+for(f in 1:nrow(datos_clima_2017))
+  for(c in 1:ncol(datos_clima_2017)){
+    if(is.na(datos_clima_2017[f,c])){
+      #ES NA
+      datos_clima_2017[f,c]=0
+    }else{
+      #NO ES NA
+    }
+  }
+
+#obtengo los datos de las velocidad maximas en el año 2017
+velocidad_maximas_viento_2017 <- datos_clima_2017[,6]
+#velocidad maxima y minima para darle limites a la grafica
+velMax <- max(datos_clima_2017[,6])
+velMin <- min(datos_clima_2017[,6])
+#grafico de lineas sobre las velocidades maximas del año 2017
+plot(
+  velocidad_maximas_viento_2017,
+  type="o",
+  ylim = c(velMin,velMax),
+  main = "Velocidades maximas del año 2017",
+  xlab="meses",
+  ylab = "velocidades maximas"
+  
+)
+
+
+## EJERCICIO 2.4
+
+
 
 
 
