@@ -100,7 +100,7 @@ lines(
 
 ## Codigo para el grafico de barras donde se muestra la precipitación mensual acumulada
 ## durante el año 2010 ##
-datos_clima_2010 <- as.data.frame(list_df[["2010"]])
+#datos_clima_2010 <- as.data.frame(list_df[["2010"]])
 
 
 
