@@ -101,23 +101,23 @@ lines(
 ## Codigo para el grafico de barras donde se muestra la precipitación mensual acumulada
 ## durante el año 2010 ##
 datos_clima_2010 <- as.data.frame(list_df[["2010"]])
-datos_clima_2010
-datos_clima_2019
 precipitacion_mensual <- datos_clima_2010[,8]
-precipitacion_mensual
+#buscamos la precipitacion maxima para graficar
+pMax <- max(precipitacion_mensual)
+
 barplot(
   precipitacion_mensual,
   xlab = "Meses",
+  ylim = c(0,pMax),
   ylab = "Precipitacion",
   main = "Precipitacion mensual del anio 2010",
-  names.arg = c(1:12)
+  names.arg = c(1:12),
 )
 
 ## EJERCICIO 2.3
 
 ## cargo el DataFrame necesario
 datos_clima_2017 <- as.data.frame(list_df[["2017"]])
-
 #limpieza de datos sobre los NA
 for(f in 1:nrow(datos_clima_2017))
   for(c in 1:ncol(datos_clima_2017)){
@@ -147,6 +147,56 @@ plot(
 
 
 ## EJERCICIO 2.4
+datos_clima_2010 <- as.data.frame(list_df[["2010"]])
+
+##creo el dataFrame necesario para las temperaturas desde el año 2010 al 2019
+datos_clima_2010_2019 <- data.frame("Año" = 2010:2019, "PROM_T_MEDIA"=0,"PROM_T_MÁX"=0,"PROM_T_MÍN"=0)
+#cargo el promedio de cada año de las temperaturas maximas, minimas y medias
+for(indice in 2010:2019){
+  datos_clima_2010_2019[indice-2009,2] <- mean(list_df[[toString(indice)]][,2])
+  datos_clima_2010_2019[indice-2009,3] <- mean(list_df[[toString(indice)]][,3])
+  datos_clima_2010_2019[indice-2009,4] <- mean(list_df[[toString(indice)]][,4])
+  
+}
+
+## EJERCICIO 2.5
+
+#grafico de las temperaturas medias de los años 2010 a 2019
+datos_2010_2019_prom_t_media <- datos_clima_2010_2019[,2]
+prom_max <- max(datos_2010_2019_prom_t_media)
+barplot(
+  datos_2010_2019_prom_t_media,
+  ylim = c(0,prom_max),
+  xlab = "Años",
+  ylab = "Prom_tem_media",
+  main = "Promedio anual de la temperatura media",
+  names.arg = c(2010:2019)
+)
+#grafico de las temperaturas maximas de los años 2010 a 2019
+datos_2010_2019_prom_t_max <- datos_clima_2010_2019[,3]
+prom_max <- max(datos_2010_2019_prom_t_max)
+barplot(
+  datos_2010_2019_prom_t_max,
+  xlab = "Años",
+  ylim = c(0,prom_max),
+  ylab = "Prom_tem_max",
+  main = "Promedio anual de la temperatura maxima",
+  names.arg = c(2010:2019)
+)
+#grafico de las temperaturas minimas de los años 2010 a 2019
+datos_2010_2019_prom_t_min <- datos_clima_2010_2019[,4]
+prom_max <- max(datos_2010_2019_prom_t_min)
+prom_min <- min(datos_2010_2019_prom_t_min)
+barplot(
+  datos_2010_2019_prom_t_min,
+  xlab = "Años",
+  ylim = c(prom_min,prom_max),
+  ylab = "Prom_tem_min",
+  main = "Promedio anual de la temperatura minima",
+  names.arg = c(2010:2019)
+)
+
+
 
 
 
@@ -162,4 +212,18 @@ for(indice in 2011:2020){
 }
 print("----datos clima completos-----")
 print(datos_clima)
+
+
+## modificacion de nombres de dataFrames
+datos_clima_2017 <- as.data.frame(list_df[["2017"]])
+nombres <- names(datos_clima_2017)
+for(i in 1:length(nombres)){
+  nombres[i] <- gsub(" ", "", nombres[i])
+}
+nombres
+names(datos_clima_2017) <- nombres
+datos_clima_2017
+
+
+
 
