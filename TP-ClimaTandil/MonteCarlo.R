@@ -21,8 +21,6 @@ data_Condicional
 
 vecCond <- calcCondProb(data_Condicional)
 vecCond
-##SEGUIR DESDE ACÁ
-help(calcCondProb)
 #vecCond <- vecCond[2:4]
 #print(vecCond)
 #vecCond <- vecCond[1:529,]
@@ -70,7 +68,6 @@ simulacionMC <- function(matAcum, inicial = 1, n_dias = 10, MinTries = 100){
     muestras <- muestras + 1
     for (i in 1:n_dias){
       actual = sigDadoAnterior(matAcum, actual)
-      #print(paste("la clase de actual ", actual))
     }
     salidas[actual] <- salidas[actual] + 1 
     vecAnt <- vecAct

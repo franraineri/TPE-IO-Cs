@@ -5,8 +5,6 @@ regresion1 <- lm(get('T. MEDIA')~MES,datos_clima)
 print(regresion1)
 # Coefficients: (Intercept - MES) : 16.8787      -0.3583 
 
-nrow(datos_clima)
-
 getTemp <- function( mes = 1 ){
   return (16.8787 - 0.3583*mes)
 }
