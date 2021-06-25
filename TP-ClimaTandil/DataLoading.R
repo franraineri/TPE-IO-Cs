@@ -47,27 +47,23 @@ for(indice in 2010:2020){
 
 
 
-## Codigo para la grafica de lineas de la temperatura mensual máxima, mínima y media del año 2019 ##
+## Codigo para la grafica de lineas de la temperatura mensual mï¿½xima, mï¿½nima y media del aï¿½o 2019 ##
 #creamos una variable DataFrame de los climas que obtuvimos en el anio 2019
 
 datos_clima_2019 <- data.frame(datos_clima_tandil_2019)
 #visualizamos esos datos
 datos_clima_2019
-#libreria para graficar
-#install.packages("ggplot2")
-#library(ggplot2)
+
 
 Mes <- c(1:12)
 Temperatura <- c(4,5,6,1,2,3,6,7,8,9,3,4)
 datos_clima_2019_media <- data.frame(Mes,Temperatura)
-##grafico de
 ggplot(data = datos_clima_2019_media, aes(x=Mes , y=Temperatura)) +
   geom_line() + 
   geom_point(size=2, shape=21, fill="black", colour="red") +
   theme_minimal()
 
 str(datos_clima_2019)
-##grafico de
 ggplot(data = datos_clima_2019, aes(x=MES , y=T..MEDIA)) +
   geom_line() + 
   geom_point(size=2, shape=21, fill="black", colour="red") +

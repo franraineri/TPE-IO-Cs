@@ -1,5 +1,6 @@
 ##MONTECARLO
 library(DisimForMixed)
+
 #primero obtengo las probabilidades acumuladas de cada temperatura
 
 size <- length(datos_clima$`T. MEDIA`) # cdad total de datos
@@ -10,7 +11,8 @@ dfAux
 
 distribucion <- dfAux$Freq/size
 dfAux <- cbind(dfAux, distribucion)
-#ocurrencias <- dfAux$Freq
+
+#ocurrencias <- dfAux$Freq  #NO se utilizó
 #total <- sum(dfAux$distribucion)  #chequeo que el total sea 1
 #min <- min(datos_clima$`T. MEDIA`) #tomo el menor de los valores
 
@@ -21,13 +23,11 @@ data_Condicional
 
 vecCond <- calcCondProb(data_Condicional)
 vecCond
-#vecCond <- vecCond[2:4]
 #print(vecCond)
-#vecCond <- vecCond[1:529,]
 
 #Armo la matriz condicional
 matCond <- matrix(vecCond$condProbVal,nrow = 23,ncol = 23)
-print(matCond)
+#print(matCond)
 
 #Armo la matriz acumulada por columnas
 matAcum <- apply(matCond,2,cumsum)
