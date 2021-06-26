@@ -1,8 +1,5 @@
 ##Neural Network
 
-
-
-
 datos_nn <- datos_clima #copio los datos
 datos_nn
 ## modificacion de nombres de dataFrames quitando los espacios
@@ -22,14 +19,6 @@ datos_nn$`RACHASMÁX`[is.na(datos_nn$`RACHASMÁX`)] <- mean(datos_nn$`RACHASMÁX`, 
 
 # ademas se elimina la columna lluvia y mes ya que no son necesarias
 datos_nn$LLUVIA <- NULL
-
-
-#Genero de valor mediano para cada columna
-#medv <- apply(datos_nn, 1, median)
-#medv
-#datos_nn <- cbind (datos_nn, medv)
-
-
 
 
 #genero un numero aleatorio y agarro la columna perteneciente al mismo para el entrenamiento
