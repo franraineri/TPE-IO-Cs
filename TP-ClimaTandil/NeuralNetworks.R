@@ -37,8 +37,6 @@ rand_index <- sample (1:nrow (datos_nn), round(0.75*nrow(datos_nn)))
 train <- datos_nn [rand_index, ]
 # y utilizo el opuesto para el testeo
 test <- datos_nn [-rand_index, ]
-#
-
 
 
 #metodo maxmin elegido, con una escala de datos [0,1] para la red neuronal
@@ -51,26 +49,23 @@ test_ <- scaled [-rand_index, ]
 library (neuralnet)
 require(neuralnet)
 
-
-##creo que no va
 #generamos los parametros para la red neuronal
 atrib_names <- names (train_)
 atrib_names
 
 
-datos_nn
 #creamos la red neuronal con los datos
-nn <- neuralnet(T.MEDIA+T.MÁX+T.MÍN+V.MEDIAVIENTO+RACHASMÁX+PRESIÓNMEDIA+(MES==MES+1) ~ MES+T.MEDIA+T.MÁX+T.MÍN+V.MEDIAVIENTO+RACHASMÁX+PRESIÓNMEDIA, data=datos_nn, hidden = c(5,5), linear.output = TRUE)
+nn <- neuralnet((MES+T.MEDIA+T.MÁX+T.MÍN+V.MEDIAVIENTO+RACHASMÁX+PRESIÓNMEDIA) ~ MES, data=datos_nn, hidden = c(5,3), linear.output = TRUE)
 #grafico la red neuronal
 plot (nn)
 
-##prediccion realiada basandonos en test_
+##prediccion realiada basandonos en test
 vMes <- as.data.frame(test$MES)
 names(vMes) <- "MES"
 vMes
-predict = compute(nn,test)
+predict = compute(nn,vMes)
 result <- predict$net.result
 class(result)
-#colnames(result) <- c("T.MEDIA","T.MÁX","T.MÍN","V.MEDIAVIENTO","RACHASMÁX","PRESIÓNMEDIA")
+colnames(result) <- c("MES","T.MEDIA","T.MÁX","T.MÍN","V.MEDIAVIENTO","RACHASMÁX","PRESIÓNMEDIA")
 result
 
