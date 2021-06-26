@@ -29,7 +29,7 @@ test <- datos_nn [-rand_index, ]
 
 datos_nn
 #creamos la red neuronal con los datos
-nn <- neuralnet(T.MEDIA+T.M�X+T.M�N+V.MEDIAVIENTO+RACHASM�X+PRESI�NMEDIA+(MES==MES+1) ~ MES+T.MEDIA+T.M�X+T.M�N+V.MEDIAVIENTO+RACHASM�X+PRESI�NMEDIA, data=datos_nn, hidden = c(5,5), linear.output = TRUE)
+nn <- neuralnet(T.MEDIA+T.M�X+T.M�N+V.MEDIAVIENTO+RACHASM�X+PRESI�NMEDIA+ MES ~ MES, data=datos_nn, hidden = c(5,3), linear.output = TRUE)
 #grafico la red neuronal
 plot (nn)
 
