@@ -1,0 +1,27 @@
+Presentación de la propuesta:
+• Alumnos integrantes y dirección de mail de cada uno de ellos. Designación del encargado de
+mantener las comunicaciones por parte del grupo de alumnos.
+
+Arellano Franco - 
+Aranda Carlos - 
+Raineri Franco - francoraineri6@gmail.como
+
+•  Breve descripción del caso a abordar, datos con los que se cuenta para su estudio (mencionar período
+de los datos) y posibles técnicas a utilizar. Responsable de las comunicaciones.
+
+El objetivo del trabajo es analizar el desgranamiento universitario que se produce a través de los años en las cohortes estudiantiles de la carrera de
+Ingeniería de Sistemas de la Facultad de Ciencias Exactas de la Universidad Nacional del Centro de la Provincia de Buenos Aires.
+Para realizar el análisis se utilizarán cadenas de Markov de orden mayor a uno, tecnicas de valizacion de datos, las cuales representan una serie de eventos, en la cual la probabilidad de que ocurra un
+evento depende de los n inmediatos anteriores. 
+Tambien se plantea la posibilidad de realizar modelos de redes neuronales y regresion lineal en un momento mas adelantado del proyecto.
+
+Como dataset se utilizarán datos provenientes del sistema SIU Guaraní,de la cual se obtendrá principalmente el progreso de los alumnos en cuanto a la
+aprobación de cursadas y finales.   ##falta agregar el rango de los datos
+
+Todo el análisis de datos se hará sobre el lenguaje de programación R.
+
+• Principal objetivo del trabajo
+lograr la optimización del proceso ya realizado o de parte del mismo, aplicados al problema de desgranamiento de las cohortes estudiantiles mencionadas.
+tambien se busca validar lo planteado y tal vez plantear un modelo de predicción.
+
+
