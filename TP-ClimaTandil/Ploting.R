@@ -363,20 +363,3 @@ funcion_clima(list_df,"grafico de barra operacion 1",2,1,2017)
 funcion_clima(list_df,"grafico de linea operacion 2",1,2,2012,2019)
 funcion_clima(list_df,"grafico de barra operacion 2",2,2,2012,2019)
 
-
-
-
-
-## modificacion de nombres de dataFrames
-datos_clima_2017 <- as.data.frame(list_df[["2017"]])
-nombres <- names(datos_clima_2017)
-for(i in 1:length(nombres)){
-  nombres[i] <- gsub(" ", "", nombres[i])
-}
-nombres
-names(datos_clima_2017) <- nombres
-datos_clima_2017
-
-
-
-
