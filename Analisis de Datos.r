@@ -309,6 +309,9 @@ names(ramas_correlatividades) <- c("Ingenier�a de Software", "Fundamentos de E
 
 
 
+
+
+
 #-------------------- Funciones para calcular la probabilidad de aprobar cada uno de los nodos que componen las ramas --------------------
 
 #----- Funcion para generar matriz de probabilidades -----
@@ -487,7 +490,27 @@ graficar_cadenas <- function (cadenas, lista_ramas, anio, color_vertex)
                      "Ingenier�a de Software - IdS, Fundamentos de Econom�a y Proyectos de Inversi�n - FeyPI", 
                      "Legislaci�n y Gesti�n Ambiental - LyGA, Organizaci�n Empresarial - OE")
     legend("center",
-           legend = text_legend,
+           legend = text_legenn para obtener cuantos aprueban, promocionan, reprueban, y est�n ausentes o abandonaron por materia -----
+
+obtener_resultados_cursadas_por_materia <- function(dataset_anio, anios_retraso_considerados)
+{
+  resultados <- list()
+  
+  for(i in 1:length(nombre_materias_obligatorias))
+  {
+    resultados[[i]] <- 
+                      dataset_anio %>% 
+                      group_by(resultado) %>% 
+                      filter((nombre_materia == nombre_materias_obligatorias[[i]]) & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>% 
+                      distinct(legajo_del_alumno) %>% 
+                      count(resultado)
+  }
+  names(resultados) <- names(nombre_materias_obligatorias)
+  
+  resultados
+}
+
+#----- Funcion parad,
            cex=0.55, 
            y.intersp = 0.27,
            text.width = strwidth(text_legend)[4]/4,
@@ -731,3 +754,10 @@ probabilidades_por_materia_2014
 probabilidades_por_materia_2015 <- calcular_probabilidades_por_materia(datos_cohorte_2015, 0, c("R"))
 probabilidades_por_materia_2015
 
+
+# S1
+# S2
+
+# Comparador <- function(s1,s2){
+#   ...
+# }
