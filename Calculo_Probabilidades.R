@@ -465,3 +465,4 @@ probabilidades_por_materia_2015
 ##agregamos la cohorte 2011
 # probabilidades_por_materia_2011 <- calcular_probabilidades_por_materia(cohorte_2011, 0, c("R"))
 # probabilidades_por_materia_2011
+

@@ -48,9 +48,9 @@ library(ggplot2)
 #ruta_2 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/Notas_cursadas.xlsx" 
 #ruta_3 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/Notas_Finales.xlsx"
 
-ruta_1 <- "C:/Users/user/Downloads/Cientificos/AlumnosLegCodificado.xlsx"
-ruta_2 <- "C:/Users/user/Downloads/Cientificos/Notas_cursadas.xlsx"
-ruta_3 <- "C:/Users/user/Downloads/Cientificos/Notas_Finales.xlsx"
+# ruta_1 <- "C:/Users/user/Downloads/Cientificos/AlumnosLegCodificado.xlsx"
+# ruta_2 <- "C:/Users/user/Downloads/Cientificos/Notas_cursadas.xlsx"
+# ruta_3 <- "C:/Users/user/Downloads/Cientificos/Notas_Finales.xlsx"
 
 ## rutas relactivas a los datos actualzados (hasta 2021)
 ruta_1 <- "/Datos_2021/AlumnosLegCodificado.xlsx"
@@ -89,7 +89,6 @@ filtrar_datos_alumnos <- function(dataset, carrera_requerida, plan_requerido, an
                             select(legajo_del_alumno, fecha_ingreso_institucion) %>% 
                             mutate(fecha_ingreso_institucion = format(as.POSIXct(fecha_ingreso_institucion, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d')) %>%
                             arrange(legajo_del_alumno) 
-  
   datos_alumnos_filtrado
 }
 
