@@ -1,91 +1,12 @@
-#-------------------- Se cargan las bibliotecas --------------------
-
-#----- Se usa la biblioteca readxl para leer los archivos excel -----
-
-#install.packages("readxl")
-library(readxl)
-
-#----- Se usa la biblioteca plyr para poder utilizar la funcion mapvalues -----
-
-#install.packages("plyr")
-library (plyr)
-
-#----- Se usa la biblioteca dplyr para poder utilizar algunos verbos como select, mutate, filter, arrange, entre otros, y además para poder utilizar los pipes (%>%) -----
-
-#install.packages("dplyr")
-library (dplyr)
-
-#----- Se usa la biblioteca lubridate para poder acceder al año de una fecha -----
-
-#install.packages("lubridate")
-library(lubridate)
-
-#----- Se usa la biblioteca sqldf para realizar consultas SQL -----
-
-#install.packages("sqldf")
-library(sqldf)
-
-#----- Se usa la biblioteca markovchain para realizar las cadenas de markov -----
-
-#install.packages("markovchain")
-library (markovchain)
-
-#----- Se usa la biblioteca diagram para graficar las cadenas de Markov -----
-
-#install.packages("diagram")
-library(diagram) 
-
-#install.packages("ggplot2")
-library(ggplot2)
-
-#-------------------- Se definen las rutas que utiliza cada integrante del equipo --------------------
-
-#ruta_1 <- "C:/Users/Benjamin Figeiredo/OneDrive - alumnos.exa.unicen.edu.ar/Documentos/Facultad/Data scientist/Promocion - analisis desgranamiento universitario/Datasets/AlumnosLegCodificado.xlsx" 
-#ruta_2 <- "C:/Users/Benjamin Figeiredo/OneDrive - alumnos.exa.unicen.edu.ar/Documentos/Facultad/Data scientist/Promocion - analisis desgranamiento universitario/Datasets/Notas_cursadas.xlsx" 
-#ruta_3 <- "C:/Users/Benjamin Figeiredo/OneDrive - alumnos.exa.unicen.edu.ar/Documentos/Facultad/Data scientist/Promocion - analisis desgranamiento universitario/Datasets/Notas_Finales.xlsx" 
-
-#ruta_1 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/AlumnosLegCodificado.xlsx"
-#ruta_2 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/Notas_cursadas.xlsx" 
-#ruta_3 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/Notas_Finales.xlsx"
-
-# ruta_1 <- "C:/Users/user/Downloads/Cientificos/AlumnosLegCodificado.xlsx"
-# ruta_2 <- "C:/Users/user/Downloads/Cientificos/Notas_cursadas.xlsx"
-# ruta_3 <- "C:/Users/user/Downloads/Cientificos/Notas_Finales.xlsx"
-
-## rutas relactivas a los datos actualzados (hasta 2021)
-ruta_1 <- "/Datos_2021/AlumnosLegCodificado.xlsx"
-ruta_2 <- "/Datos_2021/Notas_cursadas.xlsx"
-ruta_3 <- "/Datos_2021/Notas_Finales.xlsx"
-
-
-#-------------------- Se cargan los archivos excel en variables y se renombra algunas columnas para luego tener un mejor manejo de ellas --------------------
-
-datos_alumnos <- read_excel(ruta_1) 
-datos_guarani_cursadas <- read_excel(ruta_2)
-datos_guarani_finales <- read_excel(ruta_3)
-
-# Imprimimos el tipo de dato de cada variable
-
-
-names(datos_alumnos)[names(datos_alumnos) == 'legajo'] <- 'legajo_del_alumno'
-names(datos_alumnos)[names(datos_alumnos) == 'fecha_ingreso'] <- 'fecha_ingreso_institucion'
-names(datos_alumnos)[names(datos_alumnos) == 'calidad'] <- 'calidad_ingreso_institucion'
-
-names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'Legajo'] <- 'legajo_del_alumno'
-names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'nombre'] <- 'nombre_materia'
-
-names(datos_guarani_finales)[names(datos_guarani_finales) == 'legajo'] <- 'legajo_del_alumno'
-names(datos_guarani_finales)[names(datos_guarani_finales) == 'fecha'] <- 'fecha_regularidad'
-names(datos_guarani_finales)[names(datos_guarani_finales) == 'nombre'] <- 'nombre_materia'
 
 
 #-------------------- Se filtran los dataframes para que contengan los datos que son de interés para el trabajo --------------------
 
-filtrar_datos_alumnos <- function(dataset, carrera_requerida, plan_requerido, anio_empieza_considerar, anio_finaliza_considerar, tope_mes_ingreso)
+filtrar_datos_alumnos <- function(dataset, carrera_requerida, anio_empieza_considerar, anio_finaliza_considerar, tope_mes_ingreso)
 {
   datos_alumnos_filtrado <- 
                             dataset %>%
-                            filter(carrera == carrera_requerida, plan == plan_requerido, year(fecha_ingreso_institucion) >= anio_empieza_considerar, year(fecha_ingreso_institucion) <= anio_finaliza_considerar, month(fecha_ingreso_institucion) <= tope_mes_ingreso, calidad_ingreso_institucion != 'E') %>%
+                            filter(carrera == carrera_requerida, year(fecha_ingreso_institucion) >= anio_empieza_considerar, year(fecha_ingreso_institucion) <= anio_finaliza_considerar, month(fecha_ingreso_institucion) <= tope_mes_ingreso, calidad_ingreso_institucion != 'E') %>%
                             select(legajo_del_alumno, fecha_ingreso_institucion) %>% 
                             mutate(fecha_ingreso_institucion = format(as.POSIXct(fecha_ingreso_institucion, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d')) %>%
                             arrange(legajo_del_alumno) 
@@ -94,8 +15,9 @@ filtrar_datos_alumnos <- function(dataset, carrera_requerida, plan_requerido, an
 
 #----- Se filtran los datos de los alumnos para que solamente se muestren aquellos que corresponden al código de carrera 206 (Ingeniería de Sistemas), al plan 2011, que hallan ingresado entre 2012 y 2015 (cohortes a evaluar) antes de mayo, y que no ingresen por equivalencias a la carrera -----
 
-#----- TO_DO Notar que el rango debe modificarse para que se puedan evaluar otras cohortes------# 
-datos_alumnos <- filtrar_datos_alumnos(datos_alumnos, 206, 2011, 2012, 2015, 05)
+datos_alumnos <- filtrar_datos_alumnos(datos_alumnos, numero_carrera_IS, cohorte_inicial, cohorte_final, 05)
+
+
 
 #----- Estos son los nombres de las materias obligatorias de la carrera. Se plantean estas ya que son las que producen el desgranamiento -----
 
@@ -138,11 +60,11 @@ meses_para_hacer_a_tiempo_finales <- c(29, 29, 29, 29,
 
 #----- Se obtienen los datos de cursadas que corresponden únicamente a las materias obligatorias de la carrera, descartando por tanto las materias optativas ----- 
 
-filtrar_datos_notas <- function(dataset, carrera_requerida, plan_requerido)
+filtrar_datos_notas <- function(dataset, carrera_requerida)
 {
   datos_notas_filtrado <- 
                           dataset %>%
-                          filter(carrera == carrera_requerida, plan == plan_requerido, legajo_del_alumno %in% datos_alumnos$legajo_del_alumno, nombre_materia %in% nombre_materias_obligatorias) %>%
+                          filter(carrera == carrera_requerida, legajo_del_alumno %in% datos_alumnos$legajo_del_alumno, nombre_materia %in% nombre_materias_obligatorias) %>%
                           select(legajo_del_alumno, nombre_materia, fecha_regularidad, resultado)  %>% 
                           mutate(fecha_regularidad = format(as.POSIXct(fecha_regularidad, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d'))
   
@@ -151,15 +73,16 @@ filtrar_datos_notas <- function(dataset, carrera_requerida, plan_requerido)
 
 #--- fecha_regularidad -> cuando se paso la nota de cursadas ---
 
-datos_guarani_cursadas <- filtrar_datos_notas(datos_guarani_cursadas, 206, 2011)
+datos_guarani_cursadas <- filtrar_datos_notas(datos_guarani_cursadas, numero_carrera_IS)
 
 #----- Se obtienen los datos de finales que corresponden únicamente a las materias obligatorias de la carrera, descartando por tanto las materias optativas ----- 
 
-finales <- filtrar_datos_notas(datos_guarani_finales, 206, 2011)
+finales <- filtrar_datos_notas(datos_guarani_finales, numero_carrera_IS)
 
 datos_guarani_finales <- 
                         finales %>% 
                         mutate(nombre_materia = paste(nombre_materia, "Final", sep = " - ")) 
+
 
 #----- Se obtienen los datos de finales libres para luego agregarle a los alumnos que rindieron libre la nota de cursada para que no figure como que nunca aprobaron la cursada ----- 
 
@@ -243,6 +166,13 @@ filtrar_por_cohortes <- function(dataset, anio_empieza_considerar, anio_finaliza
   cohorte
 }
 
+
+
+#----- Cohorte 2011 -----
+
+agregamos nuestra nueva cohorte 2011
+cohorte_2011 <- filtrar_por_cohortes(datos_guarani_unidos, 2011, 2011) # TO_DO
+
 #----- Cohorte 2012 -----
 
 cohorte_2012 <- filtrar_por_cohortes(datos_guarani_unidos, 2012, 2012)
@@ -259,15 +189,13 @@ cohorte_2014 <- filtrar_por_cohortes(datos_guarani_unidos, 2014, 2014)
 
 cohorte_2015 <- filtrar_por_cohortes(datos_guarani_unidos, 2015, 2015)
 
-#----- Cohorte 2011 -----
-
-# agregamos nuestra nueva cohorte 2011
-# cohorte_2011 <- filtrar_por_cohortes(datos_guarani_unidos, 2011, 2011) # TO_DO
 
 
 
 
-#-------------------- Comienza el análisis por ramas --------------------
+#-------------------- Comienza la generacion de las ramas de materias y correlatividades --------------------#
+
+#Este analisis es independiente de la cohorte, por lo que se puede hacer en cualquier cohorte
 
 #----- Rama Ids: Ingeniería de Software -----
 
@@ -568,6 +496,7 @@ names(rama_AdCyTD) <- c ("AM I",
 #-------------------- Agrupacion de todas las ramas en una lista --------------------
 
 ramas_correlatividades <- list(rama_IdS, rama_FEyPI, rama_LyGA, rama_OE, rama_DdC, rama_TdI, rama_CdD2, rama_ICDI, rama_AdCyTD)
+
 names(ramas_correlatividades) <- c("Ingeniería de Software", "Fundamentos de Economía y Proyectos de Inversión", "Legislación y Gestión Ambiental", "Organización Empresarial", 
                                    "Diseño de Compiladores I", "Teoría de la Información", "Comunicación de Datos II", "Introducción al Cálculo Diferencial e Integral", "Arquitectura de Computadoras y Técnicas Digitales")
 
