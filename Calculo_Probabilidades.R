@@ -1,4 +1,4 @@
-##verificar si hace falta importar las mismas librerias que en el otro archivo R
+﻿##verificar si hace falta importar las mismas librerias que en el otro archivo R
 
 #-------------------- Se definen constantes del codigo--------------------#
 
@@ -58,31 +58,31 @@ calcular_probabilidades_por_rama_de_aprobar <-
             #--- Se obtiene el total de alumnos que cursaron dicho conjunto de materias ---
             total_alumnos_nodo <-
                 cohorte %>%  # El operador pipeline %>% es útil para concatenar múltiples dplyr operaciones.
-                group_by(legajo_del_alumno) %>%
+                group_by(legajoT) %>%
                 filter(
-                    (nombre_materia %in% rama [[i]]) &
+                    (materia %in% rama [[i]]) &
                         (
                             meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                         )
                 ) %>%
-                distinct(nombre_materia) %>%
+                distinct(materia) %>%
                 filter (n() == length(rama [[i]])) %>%
-                distinct(legajo_del_alumno) %>%
+                distinct(legajoT) %>%
                 nrow()
             
             #--- Se obtienen los que aprobaron dicho conjunto de materias ---
             aprobados_nodo <- cohorte %>%
-                group_by(legajo_del_alumno) %>%
-                filter((nombre_materia %in% rama[[i]]) &
+                group_by(legajoT) %>%
+                filter((materia %in% rama[[i]]) &
                            (resultado == "A" |
                                 resultado == "P") &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                            )
                 ) %>%
-                distinct(nombre_materia) %>%
+                distinct(materia) %>%
                 filter (n() == length(rama [[i]])) %>%
-                distinct(legajo_del_alumno) %>%
+                distinct(legajoT) %>%
                 nrow()
             
             if (total_alumnos_nodo == 0)
@@ -330,17 +330,17 @@ alumnos_aprobados_ultimo_nodo <-
     {
         aprobados <-
             dataset %>%
-            group_by(legajo_del_alumno) %>%
-            filter((nombre_materia %in% rama[[length (rama)]]) &
+            group_by(legajoT) %>%
+            filter((materia %in% rama[[length (rama)]]) &
                        (resultado == "A" |
                             resultado == "P") &
                        (
                            meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                        )
             ) %>%
-            distinct(nombre_materia) %>%
+            distinct(materia) %>%
             filter (n() == length(rama [[length (rama)]])) %>%
-            distinct(legajo_del_alumno)
+            distinct(legajoT)
         
         aprobados
     }
@@ -375,7 +375,7 @@ obtener_legajos_alumnos_terminan <- function (alumnos_terminan_anio)
     {
         alumnos_terminan <-
             alumnos_terminan %>%
-            inner_join(alumnos_terminan_anio[[i]], by = c("legajo_del_alumno"))
+            inner_join(alumnos_terminan_anio[[i]], by = c("legajoT"))
     }
     
     alumnos_terminan
@@ -392,7 +392,7 @@ obtener_probabilidad_de_terminar <-
         
         total <-
             dataset_anio %>%
-            distinct(legajo_del_alumno) %>%
+            distinct(legajoT) %>%
             nrow()
         
         if (total == 0)
@@ -419,7 +419,7 @@ graficar_torta <-
         
         total <-
             dataset_anio %>%
-            distinct(legajo_del_alumno) %>%
+            distinct(legajoT) %>%
             nrow()
         
         if (total == 0)
@@ -534,12 +534,12 @@ obtener_resultados_cursadas_por_materia <-
             resultados[[i]] <-
                 dataset_anio %>%
                 group_by(resultado) %>%
-                filter((nombre_materia == nombre_materias_obligatorias[[i]]) &
+                filter((materia == nombre_materias_obligatorias[[i]]) &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                            )
                 ) %>%
-                distinct(legajo_del_alumno) %>%
+                distinct(legajoT) %>%
                 count(resultado)
         }
         names(resultados) <- names(nombre_materias_obligatorias)
@@ -574,12 +574,12 @@ calcular_probabilidades_por_materia <-
             total <-
                 cohorte %>%
                 group_by(resultado) %>%
-                filter((nombre_materia == nombre_materias_obligatorias[[i]]) &
+                filter((materia == nombre_materias_obligatorias[[i]]) &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                            )
                 ) %>%
-                distinct(legajo_del_alumno) %>%
+                distinct(legajoT) %>%
                 nrow()
             
             #--- Se obtienen los que cumplen el/los resultado/s considerado/s ---
@@ -587,13 +587,13 @@ calcular_probabilidades_por_materia <-
             cumplen_resultado <-
                 cohorte %>%
                 group_by(resultado) %>%
-                filter((nombre_materia == nombre_materias_obligatorias[[i]]) &
+                filter((materia == nombre_materias_obligatorias[[i]]) &
                            resultado %in% resultados_considerados &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                            )
                 ) %>%
-                distinct(legajo_del_alumno) %>%
+                distinct(legajoT) %>%
                 nrow()
             
             if (total == 0)

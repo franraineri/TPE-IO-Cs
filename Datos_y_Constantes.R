@@ -38,15 +38,16 @@ library(diagram)
 #install.packages("ggplot2")
 library(ggplot2)
 
-install.packages("languageserversetup")
+#install.packages("languageserversetup")
 languageserversetup::languageserver_install()
 languageserversetup::languageserver_add_to_rprofile()
+
 
 #-------------------- Se definen las rutas que utiliza cada integrante del equipo --------------------
 
 getwd()     #el resultado de esta linea es la ruta actual donde se esta trabajando
 
-#setwd()
+setwd("/home/fran/Git_WS/TPS-CsDatos")
 
 ## rutas relativas a los datos actualzados (hasta 2021)
 ruta_1 <- "./Datos_2021/LegAlumnos_2021.xlsx"
@@ -66,20 +67,21 @@ datos_guarani_cursadas <- read_excel(ruta_2)
 datos_guarani_finales <- read_excel(ruta_3)
 
 names(datos_alumnos)[names(datos_alumnos) == 'legajo'] <-
-    'legajo_del_alumno'
+    'legajoT'
 names(datos_alumnos)[names(datos_alumnos) == 'fecha_ingreso'] <-
-    'fecha_ingreso_institucion'
+    'fecha_ingreso'
 names(datos_alumnos)[names(datos_alumnos) == 'calidad'] <-
-    'calidad_ingreso_institucion'
+    'calidad'
 
 names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'Legajo'] <-
-    'legajo_del_alumno'
+    'legajoT'
 names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'nombre'] <-
-    'nombre_materia'
+    'materia'
 
 names(datos_guarani_finales)[names(datos_guarani_finales) == 'legajo'] <-
-    'legajo_del_alumno'
+    'legajoT'
 names(datos_guarani_finales)[names(datos_guarani_finales) == 'fecha'] <-
     'fecha_regularidad'
 names(datos_guarani_finales)[names(datos_guarani_finales) == 'nombre'] <-
-    'nombre_materia'
+    'materia'
+
