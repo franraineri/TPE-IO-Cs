@@ -38,8 +38,8 @@ library(diagram)
 #install.packages("ggplot2")
 library(ggplot2)
 
-#install.packages("languageserversetup")
-languageserversetup::languageserver_install()
+install.packages("languageserversetup")
+#languageserversetup::languageserver_install()
 languageserversetup::languageserver_add_to_rprofile()
 
 
@@ -54,34 +54,35 @@ ruta_1 <- "./Datos_2021/LegAlumnos_2021.xlsx"
 ruta_2 <- "./Datos_2021/Notas_Cursadas_2021.xlsx"
 ruta_3 <- "./Datos_2021/Notas_Finales_2021.xlsx"
 
-#-------------------- Se definen constantes del codigo--------------------#
-
-cohorte_inicial <- 2011
-cohorte_final <- 2020
-numero_carrera_IS <- 206
-
 #-------------------- Se cargan los archivos excel en variables y se renombra algunas columnas para luego tener un mejor manejo de ellas --------------------
 
 datos_alumnos <- read_excel(ruta_1)
 datos_guarani_cursadas <- read_excel(ruta_2)
 datos_guarani_finales <- read_excel(ruta_3)
 
-names(datos_alumnos)[names(datos_alumnos) == 'legajo'] <-
-    'legajoT'
-names(datos_alumnos)[names(datos_alumnos) == 'fecha_ingreso'] <-
-    'fecha_ingreso'
-names(datos_alumnos)[names(datos_alumnos) == 'calidad'] <-
-    'calidad'
+#-------------------- Se definen constantes del codigo--------------------#
 
-names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'Legajo'] <-
-    'legajoT'
-names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'nombre'] <-
-    'materia'
+cohorte_inicial <- 2011
+cohorte_final <- 2020
+numero_carrera_IS <- 206
 
-names(datos_guarani_finales)[names(datos_guarani_finales) == 'legajo'] <-
-    'legajoT'
-names(datos_guarani_finales)[names(datos_guarani_finales) == 'fecha'] <-
-    'fecha_regularidad'
-names(datos_guarani_finales)[names(datos_guarani_finales) == 'nombre'] <-
-    'materia'
-
+#
+#names(datos_alumnos)[names(datos_alumnos) == 'legajo'] <-
+#    'LegajoT'
+#names(datos_alumnos)[names(datos_alumnos) == 'fecha_ingreso'] <-
+#    'fecha_ingreso'
+#names(datos_alumnos)[names(datos_alumnos) == 'calidad'] <-
+#    'calidad'
+#
+#names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'Legajo'] <-
+#    'LegajoT'
+#names(datos_guarani_cursadas)[names(datos_guarani_cursadas) == 'nombre'] <-
+#    'materia'
+#
+#names(datos_guarani_finales)[names(datos_guarani_finales) == 'legajo'] <-
+#    'LegajoT'
+#names(datos_guarani_finales)[names(datos_guarani_finales) == 'fecha'] <-
+#    'fecha'
+#names(datos_guarani_finales)[names(datos_guarani_finales) == 'nombre'] <-
+#    'materia'
+#

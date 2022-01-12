@@ -8,9 +8,9 @@ filtrar_datos_alumnos <- function(dataset, carrera_requerida, anio_empieza_consi
   datos_alumnos_filtrado <- 
                             dataset %>%
                             filter(carrera == carrera_requerida, year(fecha_ingreso) >= anio_empieza_considerar, year(fecha_ingreso) <= anio_finaliza_considerar, month(fecha_ingreso) <= tope_mes_ingreso, calidad != 'E') %>%
-                            select(legajoT, fecha_ingreso) %>% 
+                            select(LegajoT, fecha_ingreso) %>% 
                             mutate(fecha_ingreso = format(as.POSIXct(fecha_ingreso, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d')) %>%
-                            arrange(legajoT) 
+                            arrange(LegajoT) 
   datos_alumnos_filtrado
 }
 
@@ -66,13 +66,13 @@ filtrar_datos_notas <- function(dataset, carrera_requerida)
   datos_notas_filtrado <- 
                           dataset %>%
                           filter(carrera == carrera_requerida, LegajoT %in% datos_alumnos$LegajoT, materia %in% nombre_materias_obligatorias) %>%
-                          select(LegajoT, materia, fecha_regularidad, resultado)  %>% 
-                          mutate(fecha_regularidad = format(as.POSIXct(fecha_regularidad, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d'))
+                          select(LegajoT, materia, fecha, resultado)  %>% 
+                          mutate(fecha = format(as.POSIXct(fecha, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d'))
   
   datos_notas_filtrado
 }
 
-#--- fecha_regularidad -> cuando se paso la nota de cursadas ---
+#--- fecha -> cuando se paso la nota de cursadas ---
 
 datos_guarani_cursadas <- filtrar_datos_notas(datos_guarani_cursadas, numero_carrera_IS)
 
@@ -95,7 +95,7 @@ finales_libres <- sqldf('
                         FROM finales_aprobados
                         WHERE NOT EXISTS(SELECT * 
                                          FROM datos_guarani_cursadas
-                                         WHERE (finales_aprobados.legajoT = datos_guarani_cursadas.legajoT and
+                                         WHERE (finales_aprobados.LegajoT = datos_guarani_cursadas.LegajoT and
                                                 finales_aprobados.materia = datos_guarani_cursadas.materia and 
                                                 finales_aprobados.resultado = datos_guarani_cursadas.resultado)
                                          )
@@ -109,10 +109,13 @@ materias_promocionadas <-
                           datos_guarani_cursadas %>%
                           filter(resultado == "P")
 
+materias_promocionadas
+
 for (i in 1:nrow(materias_promocionadas))
 {
   materias_promocionadas [i, 2] <- paste (materias_promocionadas [i, 2], "Final", sep = " - ")
 }
+
 
 # ----- Se unen todos los dataframes en uno solo para luego trabajar con este ----- #
 
@@ -121,7 +124,7 @@ datos_guarani_unidos <-
                         union_all(finales_libres) %>%
                         union_all(datos_guarani_finales) %>%
                         union_all (materias_promocionadas) %>%
-                        arrange(legajoT, fecha_regularidad)
+                        arrange(LegajoT, fecha)
 
 
 #---- Funciones para determinar la cantidad de meses entre dos fechas ----#
@@ -141,14 +144,14 @@ obtener_diferencia_meses_entre_fechas <- function(fecha_1, fecha_2)
 
 datos_guarani_unidos <-
                         datos_guarani_unidos %>%
-                        left_join(datos_alumnos, by = c ("legajoT" = "legajoT"), suffix = c(".alum", ".cursada")) %>% 
-                        mutate(fecha_regularidad = as.Date(fecha_regularidad)) %>% 
+                        left_join(datos_alumnos, by = c ("LegajoT" = "LegajoT"), suffix = c(".alum", ".cursada")) %>% 
+                        mutate(fecha = as.Date(fecha)) %>% 
                         mutate(fecha_ingreso = as.Date(fecha_ingreso)) %>%
-                        filter(fecha_regularidad - fecha_ingreso > 0) %>%
+                        filter(fecha - fecha_ingreso > 0) %>%
                         mutate(meses_requeridos_para_regularizar = mapvalues(materia, 
                                                                              from = c(nombre_materias_obligatorias, nombre_materias_finales), 
                                                                              to = c(meses_para_hacer_a_tiempo_materias_obligatorias, meses_para_hacer_a_tiempo_finales)), 
-                               meses_transcurridos_para_regularizar = obtener_diferencia_meses_entre_fechas(fecha_ingreso, fecha_regularidad))
+                               meses_transcurridos_para_regularizar = obtener_diferencia_meses_entre_fechas(fecha_ingreso, fecha))
 
 datos_guarani_unidos$meses_requeridos_para_regularizar <- as.numeric(datos_guarani_unidos$meses_requeridos_para_regularizar)
 
@@ -171,7 +174,7 @@ filtrar_por_cohortes <- function(dataset, anio_empieza_considerar, anio_finaliza
 
 #----- Cohorte 2011 -----
 
-agregamos nuestra nueva cohorte 2011
+#agregamos nuestra nueva cohorte 2011
 cohorte_2011 <- filtrar_por_cohortes(datos_guarani_unidos, 2011, 2011) # TO_DO
 
 #----- Cohorte 2012 -----
