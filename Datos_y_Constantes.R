@@ -38,10 +38,9 @@ library(diagram)
 #install.packages("ggplot2")
 library(ggplot2)
 
-install.packages("languageserversetup")
+#install.packages("languageserversetup")
 #languageserversetup::languageserver_install()
 languageserversetup::languageserver_add_to_rprofile()
-
 
 #-------------------- Se definen las rutas que utiliza cada integrante del equipo --------------------
 
