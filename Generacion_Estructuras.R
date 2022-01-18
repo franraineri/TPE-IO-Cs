@@ -40,22 +40,10 @@ library(ggplot2)
 
 #-------------------- Se definen las rutas que utiliza cada integrante del equipo --------------------
 
-#ruta_1 <- "C:/Users/Benjamin Figeiredo/OneDrive - alumnos.exa.unicen.edu.ar/Documentos/Facultad/Data scientist/Promocion - analisis desgranamiento universitario/Datasets/AlumnosLegCodificado.xlsx" 
-#ruta_2 <- "C:/Users/Benjamin Figeiredo/OneDrive - alumnos.exa.unicen.edu.ar/Documentos/Facultad/Data scientist/Promocion - analisis desgranamiento universitario/Datasets/Notas_cursadas.xlsx" 
-#ruta_3 <- "C:/Users/Benjamin Figeiredo/OneDrive - alumnos.exa.unicen.edu.ar/Documentos/Facultad/Data scientist/Promocion - analisis desgranamiento universitario/Datasets/Notas_Finales.xlsx" 
-
-#ruta_1 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/AlumnosLegCodificado.xlsx"
-#ruta_2 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/Notas_cursadas.xlsx" 
-#ruta_3 <- "C:/Users/Joaquin/OneDrive - alumnos.exa.unicen.edu.ar/Facultad/Cientificos/TPFinal/DatosGuarani2020/Notas_Finales.xlsx"
-
-ruta_1 <- "C:/Users/user/Downloads/Cientificos/AlumnosLegCodificado.xlsx"
-ruta_2 <- "C:/Users/user/Downloads/Cientificos/Notas_cursadas.xlsx"
-ruta_3 <- "C:/Users/user/Downloads/Cientificos/Notas_Finales.xlsx"
-
-## rutas relactivas a los datos actualzados (hasta 2021)
-ruta_1 <- "/Datos_2021/AlumnosLegCodificado.xlsx"
-ruta_2 <- "/Datos_2021/Notas_cursadas.xlsx"
-ruta_3 <- "/Datos_2021/Notas_Finales.xlsx"
+## rutas relactivas a los datos actualzados (hasta 2020)
+ruta_1 <- "Datos_2020/AlumnosLegCodificado.xlsx"
+ruta_2 <- "Datos_2020/Notas_cursadas.xlsx"
+ruta_3 <- "Datos_2020/Notas_Finales.xlsx"
 
 
 #-------------------- Se cargan los archivos excel en variables y se renombra algunas columnas para luego tener un mejor manejo de ellas --------------------

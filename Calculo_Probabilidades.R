@@ -1,4 +1,4 @@
-﻿
+
 
 #-------------------- Funciones para calcular la probabilidad de aprobar cada uno de los nodos que componen las ramas --------------------
 
@@ -207,6 +207,7 @@ cadenas_markov_2015 <- obtener_cadenas(matrices_probabilidades_cohorte_2015)
 
 #----- Graficando las cadenas de Markov -----
 
+##Doc Material, Cadenas de markov representando cada rama de cada cohorte
 cadenas_markov_promedio <- obtener_cadenas(promedio_probabilidades_cohortes)
 
 graficar_cadenas(matrices_probabilidades_cohorte_2012, ramas_correlatividades, "2012", "light blue")
@@ -322,6 +323,8 @@ alumnos_terminan_2012 <- obtener_legajos_alumnos_terminan(alumnos_terminan_cada_
 
 graficar_torta (alumnos_terminan_2012, cohorte_2012, 0, "2012")
 
+
+##Doc material, Alumnos que terminan la carrera de la cohorte 2012
 alumnos_terminan_2012
 obtener_probabilidad_de_terminar(alumnos_terminan_2012, cohorte_2012)
 
@@ -370,6 +373,7 @@ obtener_probabilidad_de_terminar(alumnos_terminan_2011, cohorte_2011)
 #-------------------- Analisis de cada materia en particular --------------------
 
 #----- Funcion para obtener cuantos aprueban, promocionan, reprueban, y están ausentes o abandonaron por materia -----
+
 
 obtener_resultados_cursadas_por_materia <- function(dataset_anio, anios_retraso_considerados)
 {
@@ -440,6 +444,8 @@ calcular_probabilidades_por_materia <- function (cohorte, anios_retraso_consider
 }
 
 
+## Doc Material (cantidad de alumnos que aprueban, recursan o dejan las materias en cierta cohorte, con el retraso de años)
+
 resultados_2012 <- obtener_resultados_cursadas_por_materia(cohorte_2012, 0)
 resultados_2013 <- obtener_resultados_cursadas_por_materia(cohorte_2013, 0)
 resultados_2014 <- obtener_resultados_cursadas_por_materia(cohorte_2014, 0)
@@ -449,8 +455,8 @@ resultados_2015 <- obtener_resultados_cursadas_por_materia(cohorte_2015, 0)
 
 graficar_resultado_cursada(resultados_2012, "2012", "Algebra I")
 
-
-probabilidades_por_materia_2012 <- calcular_probabilidades_por_materia(cohorte_2012, 0, c("R"))
+#DOC MATERIAL (DESGRANAMIENTO, SE LLAMA A LA FUNCION CON R y U)
+probabilidades_por_materia_2012 <- calcular_probabilidades_por_materia(cohorte_2012, 0, c("R","U"))
 probabilidades_por_materia_2012
 
 probabilidades_por_materia_2013 <- calcular_probabilidades_por_materia(cohorte_2013, 0, c("R"))
