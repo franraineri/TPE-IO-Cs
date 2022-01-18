@@ -317,8 +317,9 @@ graficar_torta <- function (alumnos_terminan_anio, dataset_anio, anio_retraso, a
 
 
 # alumnos 2012
-
+##Doc material, Alumnos que terminan cada rama en la cohorte 2012
 alumnos_terminan_cada_rama_2012 <- obtener_legajos_alumnos_terminan_cada_rama(ramas_correlatividades, cohorte_2012, 0)
+alumnos_terminan_cada_rama_2012
 alumnos_terminan_2012 <- obtener_legajos_alumnos_terminan(alumnos_terminan_cada_rama_2012)
 
 graficar_torta (alumnos_terminan_2012, cohorte_2012, 0, "2012")
