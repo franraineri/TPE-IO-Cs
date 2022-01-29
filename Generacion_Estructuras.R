@@ -16,7 +16,7 @@ filtrar_datos_alumnos <- function(dataset, carrera_requerida, anio_empieza_consi
 
 #----- Se filtran los datos de los alumnos para que solamente se muestren aquellos que corresponden al código de carrera 206 (Ingeniería de Sistemas), al plan 2011, que hallan ingresado entre 2012 y 2015 (cohortes a evaluar) antes de mayo, y que no ingresen por equivalencias a la carrera -----
 
-datos_alumnos <- filtrar_datos_alumnos(datos_alumnos, numero_carrera_IS, cohorte_inicial, cohorte_final, 05)
+datos_alumnos_filtrados <- filtrar_datos_alumnos(datos_alumnos, numero_carrera_IS, cohorte_inicial, cohorte_final, 05)
 
 
 
@@ -76,13 +76,13 @@ filtrar_datos_notas <- function(dataset, carrera_requerida)
 
 #--- fecha -> cuando se paso la nota de cursadas ---
 
-datos_guarani_cursadas <- filtrar_datos_notas(datos_guarani_cursadas, numero_carrera_IS)
+datos_cursadas_filtrados <- filtrar_datos_notas(datos_guarani_cursadas, numero_carrera_IS)
 
 #----- Se obtienen los datos de finales que corresponden únicamente a las materias obligatorias de la carrera, descartando por tanto las materias optativas ----- 
 
 finales <- filtrar_datos_notas(datos_guarani_finales, numero_carrera_IS)
 
-datos_guarani_finales <- finales %>% 
+datos_finales_filtrados <- finales %>% 
                          mutate(nombre_materia = paste(nombre_materia, "Final", sep = " - ")) 
 
 
@@ -91,23 +91,21 @@ datos_guarani_finales <- finales %>%
 finales_aprobados <- finales %>% 
                      filter(resultado == "A")
 
-finales_libres <- sqldf('
-                        SELECT * 
-                        FROM finales_aprobados
-                        WHERE NOT EXISTS(SELECT * 
-                                         FROM datos_guarani_cursadas
-                                         WHERE (finales_aprobados.LegajoT = datos_guarani_cursadas.LegajoT and
-                                                finales_aprobados.nombre_materia = datos_guarani_cursadas.nombre_materia and 
-                                                finales_aprobados.resultado = datos_guarani_cursadas.resultado)
+finales_libres <- sqldf('SELECT * 
+                         FROM finales_aprobados
+                         WHERE NOT EXISTS( SELECT * 
+                                          FROM datos_cursadas_filtrados
+                                          WHERE (finales_aprobados.LegajoT = datos_cursadas_filtrados.LegajoT and
+                                                 finales_aprobados.nombre_materia = datos_cursadas_filtrados.nombre_materia and 
+                                                 finales_aprobados.resultado = datos_cursadas_filtrados.resultado)
                                          )
-                        ')
+                         ')
 
 
 
 #----- Se obtienen los datos de cursadas promocionadas, para luego agregarle a los alumnos que promocionaron la nota de final para que no figure como que nunca aprobaron el final de la materia promocionada ----- 
 
-materias_promocionadas <- 
-                          datos_guarani_cursadas %>%
+materias_promocionadas <- datos_cursadas_filtrados %>%
                           filter(resultado == "P")
 
 #print(materias_promocionadas)
@@ -120,10 +118,9 @@ for (i in 1:nrow(materias_promocionadas))
 
 # ----- Se unen todos los dataframes en uno solo para luego trabajar con este ----- #
 
-datos_guarani_unidos <- 
-                        datos_guarani_cursadas %>% 
+datos_guarani_unidos <- datos_cursadas_filtrados %>% 
                         union_all(finales_libres) %>%
-                        union_all(datos_guarani_finales) %>%
+                        union_all(datos_finales_filtrados) %>%
                         union_all (materias_promocionadas) %>%
                         arrange(LegajoT, fecha)
 
@@ -145,7 +142,7 @@ obtener_diferencia_meses_entre_fechas <- function(fecha_1, fecha_2)
 
 datos_guarani_unidos <-
                         datos_guarani_unidos %>%
-                        left_join(datos_alumnos, by = c ("LegajoT" = "LegajoT"), suffix = c(".alum", ".cursada")) %>% 
+                        left_join(datos_alumnos_filtrados, by = c ("LegajoT" = "LegajoT"), suffix = c(".alum", ".cursada")) %>% 
                         mutate(fecha = as.Date(fecha)) %>% 
                         mutate(fecha_ingreso = as.Date(fecha_ingreso)) %>%
                         filter(fecha - fecha_ingreso > 0) %>%
