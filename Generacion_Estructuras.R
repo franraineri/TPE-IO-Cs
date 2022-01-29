@@ -66,9 +66,9 @@ filtrar_datos_notas <- function(dataset, carrera_requerida)
   datos_notas_filtrado <- 
                           dataset %>%
                           filter(carrera == carrera_requerida, LegajoT %in% datos_alumnos$LegajoT
-                                 , nombre_materia %in% nombre_materias_obligatorias   
+                                 , nombre %in% nombre_materias_obligatorias   
                                  ) %>%
-                          select(LegajoT, nombre_materia, fecha, resultado)  %>% 
+                          select(LegajoT, nombre, fecha, resultado)  %>% 
                           mutate(fecha = format(as.POSIXct(fecha, format='%Y-%m-%d %H:%M:%S'), format='%Y-%m-%d'))
   
   datos_notas_filtrado
@@ -83,7 +83,7 @@ datos_cursadas_filtrados <- filtrar_datos_notas(datos_guarani_cursadas, numero_c
 finales <- filtrar_datos_notas(datos_guarani_finales, numero_carrera_IS)
 
 datos_finales_filtrados <- finales %>% 
-                         mutate(nombre_materia = paste(nombre_materia, "Final", sep = " - ")) 
+                         mutate(nombre = paste(nombre, "Final", sep = " - ")) 
 
 
 #----- Se obtienen los datos de finales libres para luego agregarle a los alumnos que rindieron libre la nota de cursada para que no figure como que nunca aprobaron la cursada ----- 
@@ -96,7 +96,7 @@ finales_libres <- sqldf('SELECT *
                          WHERE NOT EXISTS( SELECT * 
                                           FROM datos_cursadas_filtrados
                                           WHERE (finales_aprobados.LegajoT = datos_cursadas_filtrados.LegajoT and
-                                                 finales_aprobados.nombre_materia = datos_cursadas_filtrados.nombre_materia and 
+                                                 finales_aprobados.nombre = datos_cursadas_filtrados.nombre and 
                                                  finales_aprobados.resultado = datos_cursadas_filtrados.resultado)
                                          )
                          ')
@@ -146,12 +146,13 @@ datos_guarani_unidos <-
                         mutate(fecha = as.Date(fecha)) %>% 
                         mutate(fecha_ingreso = as.Date(fecha_ingreso)) %>%
                         filter(fecha - fecha_ingreso > 0) %>%
-                        mutate(meses_requeridos_para_regularizar = mapvalues(nombre_materia, 
+                        mutate(meses_requeridos_para_regularizar = mapvalues(nombre, 
                                                                              from = c(nombre_materias_obligatorias, nombre_materias_finales), 
                                                                              to = c(meses_para_hacer_a_tiempo_materias_obligatorias, meses_para_hacer_a_tiempo_finales)), 
                                meses_transcurridos_para_regularizar = obtener_diferencia_meses_entre_fechas(fecha_ingreso, fecha))
 
 datos_guarani_unidos$meses_requeridos_para_regularizar <- as.numeric(datos_guarani_unidos$meses_requeridos_para_regularizar)
+##chequear la linea de codigo anterior !!!
 
 datos_guarani_unidos <- 
                         datos_guarani_unidos %>% 
