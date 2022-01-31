@@ -460,13 +460,13 @@ graficar_resultado_cursada(resultados_2012, "2012", "Algebra I")
 probabilidades_por_materia_2012 <- calcular_probabilidades_por_materia(cohorte_2012, 0, c("R","U"))
 probabilidades_por_materia_2012
 
-probabilidades_por_materia_2013 <- calcular_probabilidades_por_materia(cohorte_2013, 0, c("R"))
+probabilidades_por_materia_2013 <- calcular_probabilidades_por_materia(cohorte_2013, 0, c("R","U"))
 probabilidades_por_materia_2013
 
-probabilidades_por_materia_2014 <- calcular_probabilidades_por_materia(cohorte_2014, 0, c("R"))
+probabilidades_por_materia_2014 <- calcular_probabilidades_por_materia(cohorte_2014, 0, c("R","U"))
 probabilidades_por_materia_2014
 
-probabilidades_por_materia_2015 <- calcular_probabilidades_por_materia(cohorte_2015, 0, c("R"))
+probabilidades_por_materia_2015 <- calcular_probabilidades_por_materia(cohorte_2015, 0, c("R","U"))
 probabilidades_por_materia_2015
 
 ##agregamos la cohorte 2011
