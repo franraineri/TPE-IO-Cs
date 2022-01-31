@@ -197,12 +197,13 @@ graficar_cadenas <- function (cadenas, lista_ramas, anio, plot , color_vertex)
     }
 }
 
+cadenas_markov_2011 <- obtener_cadenas(matrices_probabilidades_cohorte_2011)
 cadenas_markov_2012 <- obtener_cadenas(matrices_probabilidades_cohorte_2012)
 cadenas_markov_2013 <- obtener_cadenas(matrices_probabilidades_cohorte_2013)
 cadenas_markov_2014 <- obtener_cadenas(matrices_probabilidades_cohorte_2014)
 cadenas_markov_2015 <- obtener_cadenas(matrices_probabilidades_cohorte_2015)
 ## Agregamos la cade de markov de la cohorte 2011
-# cadenas_markov_2011 <- obtener_cadenas(matrices_probabilidades_cohorte_2011)
+
 
 
 #----- Graficando las cadenas de Markov -----
@@ -381,16 +382,16 @@ obtener_resultados_cursadas_por_materia <- function(dataset_anio, anios_retraso_
 {
     resultados <- list()
     
-    for(i in 1:length(nombres_obligatorias))
+    for(i in 1:length(nombre_materias_obligatorias))
     {
         resultados[[i]] <- 
             dataset_anio %>% 
             group_by(resultado) %>% 
-            filter((nombre == nombres_obligatorias[[i]]) & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>% 
+            filter((nombre == nombre_materias_obligatorias[[i]]) & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>% 
             distinct(LegajoT) %>% 
             count(resultado)
     }
-    names(resultados) <- names(nombres_obligatorias)
+    names(resultados) <- names(nombre_materias_obligatorias)
     
     resultados
 }
@@ -410,14 +411,14 @@ calcular_probabilidades_por_materia <- function (cohorte, anios_retraso_consider
 {
     probabilidades_por_materia <- c()
     
-    for (i in 1 : length (nombres_obligatorias))
+    for (i in 1 : length (nombre_materias_obligatorias))
     {
         #--- Se obtiene el total de alumnos que cursaron la materia ---
         
         total <-
             cohorte %>%
             group_by(resultado) %>%
-            filter((nombre == nombres_obligatorias[[i]]) & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>%
+            filter((nombre == nombre_materias_obligatorias[[i]]) & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>%
             distinct(LegajoT) %>%
             nrow()
         
@@ -426,7 +427,7 @@ calcular_probabilidades_por_materia <- function (cohorte, anios_retraso_consider
         cumplen_resultado <- 
             cohorte %>%
             group_by(resultado) %>%
-            filter((nombre == nombres_obligatorias[[i]]) & resultado %in% resultados_considerados & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>%
+            filter((nombre == nombre_materias_obligatorias[[i]]) & resultado %in% resultados_considerados & (meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados)) %>%
             distinct(LegajoT) %>%
             nrow()
         
@@ -440,7 +441,7 @@ calcular_probabilidades_por_materia <- function (cohorte, anios_retraso_consider
         }
         
     }
-    names(probabilidades_por_materia) <- names(nombres_obligatorias)
+    names(probabilidades_por_materia) <- names(nombre_materias_obligatorias)
     
     probabilidades_por_materia
 }
@@ -461,18 +462,18 @@ graficar_resultado_cursada(resultados_2012, "2012", "Algebra I")
 probabilidades_por_materia_2012 <- calcular_probabilidades_por_materia(cohorte_2012, 0, c("R","U"))
 probabilidades_por_materia_2012
 
-probabilidades_por_materia_2013 <- calcular_probabilidades_por_materia(cohorte_2013, 0, c("R"))
+probabilidades_por_materia_2013 <- calcular_probabilidades_por_materia(cohorte_2013, 0, c("R", "U"))
 probabilidades_por_materia_2013
 
 probabilidades_por_materia_2014 <- calcular_probabilidades_por_materia(cohorte_2014, 0, c("R"))
 probabilidades_por_materia_2014
 
-probabilidades_por_materia_2015 <- calcular_probabilidades_por_materia(cohorte_2015, 0, c("R"))
+probabilidades_por_materia_2015 <- calcular_probabilidades_por_materia(cohorte_2015, 0, c("R", "U"))
 probabilidades_por_materia_2015
 
 ##agregamos la cohorte 2011
-# probabilidades_por_materia_2011 <- calcular_probabilidades_por_materia(cohorte_2011, 0, c("R"))
-# probabilidades_por_materia_2011
+probabilidades_por_materia_2011 <- calcular_probabilidades_por_materia(cohorte_2011, 0, c("R", "U"))
+probabilidades_por_materia_2011
 
 lista_matrices <-
     c(
@@ -827,12 +828,12 @@ obtener_resultados_cursadas_por_materia <-
     {
         resultados <- list()
         
-        for (i in 1:length(nombres_obligatorias))
+        for (i in 1:length(nombre_materias_obligatorias))
         {
             resultados[[i]] <-
                 dataset_anio %>%
                 group_by(resultado) %>%
-                filter((materia == nombres_obligatorias[[i]]) &
+                filter((materia == nombre_materias_obligatorias[[i]]) &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                            )
@@ -840,7 +841,7 @@ obtener_resultados_cursadas_por_materia <-
                 distinct(legajoT) %>%
                 count(resultado)
         }
-        names(resultados) <- names(nombres_obligatorias)
+        names(resultados) <- names(nombre_materias_obligatorias)
         
         resultados
     }
@@ -865,14 +866,14 @@ calcular_probabilidades_por_materia <-
     {
         probabilidades_por_materia <- c()
         
-        for (i in 1:length (nombres_obligatorias))
+        for (i in 1:length (nombre_materias_obligatorias))
         {
             #--- Se obtiene el total de alumnos que cursaron la materia ---
             
             total <-
                 cohorte %>%
                 group_by(resultado) %>%
-                filter((materia == nombres_obligatorias[[i]]) &
+                filter((materia == nombre_materias_obligatorias[[i]]) &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
                            )
@@ -885,7 +886,7 @@ calcular_probabilidades_por_materia <-
             cumplen_resultado <-
                 cohorte %>%
                 group_by(resultado) %>%
-                filter((materia == nombres_obligatorias[[i]]) &
+                filter((materia == nombre_materias_obligatorias[[i]]) &
                            resultado %in% resultados_considerados &
                            (
                                meses_transcurridos_para_regularizar <= meses_requeridos_para_regularizar + 12 * anios_retraso_considerados
@@ -905,7 +906,7 @@ calcular_probabilidades_por_materia <-
             
         }
         names(probabilidades_por_materia) <-
-            names(nombres_obligatorias)
+            names(nombre_materias_obligatorias)
         
         probabilidades_por_materia
     }
